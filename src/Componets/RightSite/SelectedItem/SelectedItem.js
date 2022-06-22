@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { TiDeleteOutline } from "react-icons/ti";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-const SelectedItem = ({ prices,Name}) => {
-    console.log(Name)
+const SelectedItem = ({prices}) => {
+    console.log(prices)
     let count = 0;
     const [qut, setQut] = useState(1)
     for (const add of prices) {
@@ -12,8 +12,6 @@ const SelectedItem = ({ prices,Name}) => {
     const DeleteItems = (ID) => {
 
     }
-
-
     const Addition = (ID) => {
         for (const add of prices) {
             if (add.id === ID) {
@@ -90,7 +88,7 @@ const SelectedItem = ({ prices,Name}) => {
                                     {index + 1}
                                 </th>
                                 <td className="px-6 py-4">
-                                    {/* {Name.slice(0, 6)} */}
+                                    {p?.name?.slice(0, 10)}
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className='flex gap-3 text-xl'>
@@ -114,7 +112,7 @@ const SelectedItem = ({ prices,Name}) => {
                 </table>
             </div>
             <div className='mt-10'>
-                <div class="divider"></div>
+                <div className="divider"></div>
                 <h1 className='text-xl font-medium text-right'>Total Prices : $  {count}</h1>
             </div>
             <h1 className='text-center mt-32'>
