@@ -2,24 +2,24 @@ import React, { useState } from 'react';
 import { TiDeleteOutline } from "react-icons/ti";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-const SelectedItem = ({ prices }) => {
-    console.log(prices)
+const SelectedItem = ({ prices,Name}) => {
+    console.log(Name)
     let count = 0;
     const [qut, setQut] = useState(1)
     for (const add of prices) {
         count = count + add.unit_price * qut
     }
     const DeleteItems = (ID) => {
-        console.log("Delete", ID)
+
     }
+
+
     const Addition = (ID) => {
-        console.log(ID)
-        console.log(prices)
-        // for (const add of prices) {
-        //     if (add.id === ID) {
-        //         setQut(qut + 1)
-        //     }
-        // }
+        for (const add of prices) {
+            if (add.id === ID) {
+                setQut(qut + 1)
+            }
+        }
     }
     /* ========================= =========================== */
 
@@ -44,10 +44,11 @@ const SelectedItem = ({ prices }) => {
             });
         } else {
             confirmAlert({
-                message: 'Are you no sure .',
+                title:<h1 className='text-2xl text-center'>Not Item Select</h1>,
+               
                 buttons: [
                     {
-                        label: 'No',
+                        label:'Cancel',
                     }
                 ]
             });
@@ -89,20 +90,20 @@ const SelectedItem = ({ prices }) => {
                                     {index + 1}
                                 </th>
                                 <td className="px-6 py-4">
-                                    {p?.note.slice(0, 6)}
+                                    {/* {Name.slice(0, 6)} */}
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className='flex gap-3 text-xl'>
                                         <span>-</span>
                                         <span className='bg-white  rounded px-2'>{qut}</span>
-                                        <span onClick={()=>Addition(p?.id)} className='cursor-pointer'>+</span>
+                                        <span onClick={() => Addition(p?.id)} className='cursor-pointer'>+</span>
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
                                     $ {p?.unit_price * qut}
                                 </td>
                                 <td className="px-6 py-4 text-right">
-                                    <button onClick={DeleteItems(p?.id)}>
+                                    <button onClick={() => DeleteItems(p?.id)}>
                                         <TiDeleteOutline />
                                     </button>
                                 </td>
@@ -113,9 +114,10 @@ const SelectedItem = ({ prices }) => {
                 </table>
             </div>
             <div className='mt-10'>
+                <div class="divider"></div>
                 <h1 className='text-xl font-medium text-right'>Total Prices : $  {count}</h1>
             </div>
-            <h1 className='text-center mt-30'>
+            <h1 className='text-center mt-32'>
                 <button onClick={submit} className="btn btn-secondary">Confirm</button>
 
             </h1>

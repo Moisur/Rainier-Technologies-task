@@ -4,6 +4,7 @@ import SelectedItem from "./Componets/RightSite/SelectedItem/SelectedItem";
 function App() {
   const [products, setProduct] = useState([])
   const [prices, setPrices] = useState([])
+  const [Names, setSetName] = useState([])
   useEffect(() => {
     fetch('https://fec-inventory-api.herokuapp.com/product-info')
       .then(res => res.json())
@@ -12,12 +13,14 @@ function App() {
       })
   }, [])
 
-  const ProductPrices = (id) => {
+  const ProductPrices = (id,name) => {
     fetch(`https://fec-inventory-api.herokuapp.com/inventory-info?product_id=${id}`)
       .then(res => res.json())
       .then(data => {
         const AddProduct = [...prices, ...data]
+        const AddNames = [{Names,name}]
         setPrices(AddProduct)
+        setSetName(AddNames)
       })
 
   }
@@ -41,7 +44,7 @@ function App() {
                         <h1> {product.description.slice(0,50)}</h1>
                       </div>
                       <div className="w-5/12"> 
-                        <button onClick={() => ProductPrices(product.id)} className='btn tex-sm bg-amber-300 border-0'>Add to List</button>
+                        <button onClick={() => ProductPrices((product.id),(product.name))} className='btn tex-sm bg-amber-300 border-0'>Add to List</button>
                       </div>
                     </div>
                   </div>
@@ -51,7 +54,7 @@ function App() {
           </div>
         </div>
         <div className="w-4/12 ">
-          <SelectedItem prices={prices}></SelectedItem>
+          <SelectedItem Name={Names} prices={prices}></SelectedItem>
         </div>
       </div>
     </div>
