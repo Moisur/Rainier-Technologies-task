@@ -3,6 +3,7 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 const SelectedItem = ({ prices }) => {
+    console.log(prices)
     let count = 0;
     const [n, sett] = useState(0)
     function handleChange(event) {
