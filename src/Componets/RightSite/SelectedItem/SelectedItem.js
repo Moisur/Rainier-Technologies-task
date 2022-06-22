@@ -5,35 +5,53 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 const SelectedItem = ({ prices }) => {
     console.log(prices)
     let count = 0;
-    const [n, sett] = useState(0)
-    function handleChange(event) {
-        const numberAdd = event.target.value
-        sett(numberAdd)
-    }
-
+    const [qut, setQut] = useState(1)
     for (const add of prices) {
-        count = count + add.unit_price
+        count = count + add.unit_price * qut
     }
     const DeleteItems = (ID) => {
         console.log("Delete", ID)
     }
+    const Addition = (ID) => {
+        console.log(ID)
+        console.log(prices)
+        // for (const add of prices) {
+        //     if (add.id === ID) {
+        //         setQut(qut + 1)
+        //     }
+        // }
+    }
     /* ========================= =========================== */
 
     const submit = () => {
-        confirmAlert({
-            title: 'Confirm to submit',
-            message: 'Are you sure to do this.',
-            buttons: [
-                {
-                    label: 'Yes',
-                    onClick: () => alert('Click Yes')
-                },
-                {
-                    label: 'No',
-                    onClick: () => alert('Click No')
-                }
-            ]
-        });
+        if (count > 0) {
+            confirmAlert({
+                title: 'Confirm to submit',
+                message: <div>
+                    <div>
+
+                    </div>
+                </div>,
+                buttons: [
+                    {
+                        label: 'Yes',
+                        onClick: () => alert('Click Yes')
+                    },
+                    {
+                        label: 'No',
+                    }
+                ]
+            });
+        } else {
+            confirmAlert({
+                message: 'Are you no sure .',
+                buttons: [
+                    {
+                        label: 'No',
+                    }
+                ]
+            });
+        }
     }
 
 
@@ -74,10 +92,14 @@ const SelectedItem = ({ prices }) => {
                                     {p?.note.slice(0, 6)}
                                 </td>
                                 <td className="px-6 py-4">
-                                    <input className='w-10' type="Number" onChange={handleChange} />
+                                    <div className='flex gap-3 text-xl'>
+                                        <span>-</span>
+                                        <span className='bg-white  rounded px-2'>{qut}</span>
+                                        <span onClick={()=>Addition(p?.id)} className='cursor-pointer'>+</span>
+                                    </div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    $ {p?.unit_price}
+                                    $ {p?.unit_price * qut}
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     <button onClick={DeleteItems(p?.id)}>
@@ -94,7 +116,8 @@ const SelectedItem = ({ prices }) => {
                 <h1 className='text-xl font-medium text-right'>Total Prices : $  {count}</h1>
             </div>
             <h1 className='text-center mt-30'>
-                <button onClick={submit} class="btn btn-secondary">Confirm</button>
+                <button onClick={submit} className="btn btn-secondary">Confirm</button>
+
             </h1>
         </div>
     );
