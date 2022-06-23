@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TiDeleteOutline } from "react-icons/ti";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-const SelectedItem = ({ prices, DeleteItems, Reset,handleChange  }) => {
+const SelectedItem = ({ prices, DeleteItems, Reset }) => {
+    const [add, setAdd] = useState([])
+    const [Qut, setQut] = useState(1)
+    const [Total,setTotal]=useState(0)
     let count = 0;
-    const [qut, setQut] = useState(1)
-    const Addition = (ID) => {
-    fetch(`https://fec-inventory-api.herokuapp.com/inventory-info/${ID}`)
-      .then(res => res.json())
-      .then(data => {
-        count =count+1
-        setQut(count)
-      })
+    const Amount = (item, a) => {
+        const ind = prices.indexOf(item);
+        var Result = prices;
+        if (a === true) {
+            Result[ind].unit_price +=item.unit_price;
+            Result[ind].qty +=1;
+            setAdd([...Result])
+        }
+        if (a === false) {
+            Result[ind].unit_price -=1;
+            Result[ind].qty -=1;
+            setAdd([...Result])
+        }
+        // handlePrice(item)
+
+    }
+    for(const item of prices){
+        count=count+item.unit_price
     }
     /* ========================= =========================== */
     const submit = () => {
@@ -27,7 +40,7 @@ const SelectedItem = ({ prices, DeleteItems, Reset,handleChange  }) => {
                                         {p?.name?.slice(0, 10)}
                                     </p>
                                     <p className="px-6 py-4 ">
-                                        $ {p?.unit_price * qut}
+                                        $ {p?.unit_price}
                                     </p>
                                 </div>)
                             }
@@ -98,9 +111,9 @@ const SelectedItem = ({ prices, DeleteItems, Reset,handleChange  }) => {
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className='flex gap-3 text-xl'>
-                                        <span onClick={() =>handleChange(p,1)}>-</span>
-                                        <span className='bg-white  rounded px-2'>{(p.qty*0)+qut}</span>
-                                        <span onClick={() =>  handleChange(p,1)} className='cursor-pointer'>+</span>
+                                        <span className='cursor-pointer' onClick={() => Amount(p, false)}>-</span>
+                                        <span className='bg-white  rounded px-2'>{p.qty}</span>
+                                        <span onClick={() => Amount(p, true)} className='cursor-pointer'>+</span>
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">

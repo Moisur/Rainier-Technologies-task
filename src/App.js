@@ -16,15 +16,15 @@ function App() {
         }
       })
   }, [])
-  
-  const handleChange = (item, d) => {
-    const ind = prices.indexOf(item);
-    const arr = prices;
-    arr[ind].amount += d;
 
-    if (arr[ind].amount === 0) arr[ind].amount = 1;
-    setPrices([...arr]);
-  };
+  // const handleChange = (item, d) => {
+  //   const ind = prices.indexOf(item);
+  //   const arr = prices;
+  //   arr[ind].amount += d;
+
+  //   if (arr[ind].amount === 0) arr[ind].amount = 1;
+  //   setPrices([...arr]);
+  // };
 
 
 
@@ -79,7 +79,7 @@ function App() {
           </div>
         </div>
         <div className="w-4/12 ">
-          <SelectedItem DeleteItems={DeleteItems} prices={prices} Reset={Reset} handleChange={handleChange}></SelectedItem>
+          <SelectedItem DeleteItems={DeleteItems} prices={prices} Reset={Reset} ></SelectedItem>
         </div>
       </div>
     </div>
