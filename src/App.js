@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import SelectedItem from "./Componets/RightSite/SelectedItem/SelectedItem";
 import Spinner from "./Componets/Spinner/Spinner";
-
+import { ImCross } from "react-icons/im";
 function App() {
   const [products, setProduct] = useState([])
   const [prices, setPrices] = useState([])
@@ -28,12 +28,19 @@ function App() {
 
 
 
+
+
+
+
+
+
+
   const DeleteItems = (index) => {
-    var result =prices
-    result.splice(index,1)
+    var result = prices
+    result.splice(index, 1)
     setPrices([...result])
   }
-  const Reset=()=>{
+  const Reset = () => {
     setPrices([])
   }
   const ProductPrices = (id, name, index) => {
@@ -46,9 +53,55 @@ function App() {
       })
   }
 
+  /* ===================== option================== */
+  const [choice, setChoice] = useState();
+  const Delete = () => {
+    setChoice('')
+  }
+
   return (
     <div className="p-5">
       <h1 className="text-2xl font-medium mb-5">Dashboard {'>'} Supply Room </h1>
+      <div className="my-4 flex items-center  gap-4 ">
+        <div>
+          <input type="text" className="input w-52 max-w-xs border-amber-300" />
+        </div>
+        <select
+          value={choice}
+          defaultValue={"default"}
+          onChange={(e) => setChoice(e.target.value)}
+          className="select select-success w-32 max-w-xs"
+        >
+          <option value={"Text1"} disabled>Text1</option>
+          <option value={"Text2"}>Text2</option>
+          <option value={"Text3"}>Text3</option>
+          <option value={"Text4"}>Text4</option>
+          <option value={"Text5"} >Text5</option>
+        </select>
+
+        <select
+          value={choice}
+          defaultValue={"default"}
+          onChange={(e) => setChoice(e.target.value)}
+          className="select select-success w-32 max-w-xs"
+        >
+          <option value={"Text"} disabled>Text</option>
+          <option value={"Text"}>Text</option>
+          <option value={"Text"}>Text</option>
+          <option value={"Text"}>Text</option>
+          <option value={"Text"} >Text</option>
+        </select>
+        <div >
+          {
+            choice && <div className="w-20 flex justify-center items-center gap-4">
+              <h1>{choice}</h1>
+              <span onClick={() => Delete()}><ImCross /></span>
+            </div>
+          }
+
+        </div>
+
+      </div>
       <div className="flex gap-8">
         <div className="w-8/12">
           {
