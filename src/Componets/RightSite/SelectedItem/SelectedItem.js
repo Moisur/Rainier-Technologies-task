@@ -1,33 +1,39 @@
 import React, { useState } from 'react';
 import { TiDeleteOutline } from "react-icons/ti";
-import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-const SelectedItem = ({prices}) => {
-    console.log(prices)
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+const SelectedItem = ({ prices, DeleteItems, Reset,handleChange  }) => {
     let count = 0;
     const [qut, setQut] = useState(1)
-    for (const add of prices) {
-        count = count + add.unit_price * qut
-    }
-    const DeleteItems = (ID) => {
-
-    }
     const Addition = (ID) => {
-        for (const add of prices) {
-            if (add.id === ID) {
-                setQut(qut + 1)
-            }
-        }
+    fetch(`https://fec-inventory-api.herokuapp.com/inventory-info/${ID}`)
+      .then(res => res.json())
+      .then(data => {
+        count =count+1
+        setQut(count)
+      })
     }
     /* ========================= =========================== */
-
     const submit = () => {
         if (count > 0) {
             confirmAlert({
-                title: 'Confirm to submit',
                 message: <div>
+                    <h1 className='text-xl font-medium text-black'> Confirm to submit </h1>
                     <div>
-
+                        <div>
+                            {
+                                prices.map(p => <div key={p.id} className='flex justify-between items-center'>
+                                    <p className="px-6 py-4">
+                                        {p?.name?.slice(0, 10)}
+                                    </p>
+                                    <p className="px-6 py-4 ">
+                                        $ {p?.unit_price * qut}
+                                    </p>
+                                </div>)
+                            }
+                        </div>
+                        <div className="divider"></div>
+                        <h1 className='text-right'>Total:{count}</h1>
                     </div>
                 </div>,
                 buttons: [
@@ -42,11 +48,11 @@ const SelectedItem = ({prices}) => {
             });
         } else {
             confirmAlert({
-                title:<h1 className='text-2xl text-center'>Not Item Select</h1>,
-               
+                title: <h1 className='text-2xl text-center'>Not Item Select</h1>,
+
                 buttons: [
                     {
-                        label:'Cancel',
+                        label: 'Cancel',
                     }
                 ]
             });
@@ -88,20 +94,20 @@ const SelectedItem = ({prices}) => {
                                     {index + 1}
                                 </th>
                                 <td className="px-6 py-4">
-                                    {p?.name?.slice(0, 10)}
+                                    {p?.name?.slice(0, 9)}
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className='flex gap-3 text-xl'>
-                                        <span>-</span>
-                                        <span className='bg-white  rounded px-2'>{qut}</span>
-                                        <span onClick={() => Addition(p?.id)} className='cursor-pointer'>+</span>
+                                        <span onClick={() =>handleChange(p,1)}>-</span>
+                                        <span className='bg-white  rounded px-2'>{(p.qty*0)+qut}</span>
+                                        <span onClick={() =>  handleChange(p,1)} className='cursor-pointer'>+</span>
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    $ {p?.unit_price * qut}
+                                    $ {p?.unit_price}
                                 </td>
                                 <td className="px-6 py-4 text-right">
-                                    <button onClick={() => DeleteItems(p?.id)}>
+                                    <button onClick={() => DeleteItems(index)}>
                                         <TiDeleteOutline />
                                     </button>
                                 </td>
@@ -113,7 +119,10 @@ const SelectedItem = ({prices}) => {
             </div>
             <div className='mt-10'>
                 <div className="divider"></div>
-                <h1 className='text-xl font-medium text-right'>Total Prices : $  {count}</h1>
+                <div className='flex justify-between item-center'>
+                    <button className='btn btn-secondary' onClick={() => Reset()} >Reset</button>
+                    <h1 className='text-xl font-medium text-right'>Total Prices : $  {count}</h1>
+                </div>
             </div>
             <h1 className='text-center mt-32'>
                 <button onClick={submit} className="btn btn-secondary">Confirm</button>

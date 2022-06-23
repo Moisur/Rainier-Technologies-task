@@ -1,36 +1,59 @@
 import { useEffect, useState } from "react";
 import SelectedItem from "./Componets/RightSite/SelectedItem/SelectedItem";
+import Spinner from "./Componets/Spinner/Spinner";
 
 function App() {
   const [products, setProduct] = useState([])
   const [prices, setPrices] = useState([])
+  const [SpinnerLod, setSpinnerLod] = useState(true)
   useEffect(() => {
     fetch('https://fec-inventory-api.herokuapp.com/product-info')
       .then(res => res.json())
       .then(data => {
-        setProduct(data)
+        if (data) {
+          setProduct(data)
+          setSpinnerLod(false)
+        }
       })
   }, [])
+  
+  const handleChange = (item, d) => {
+    const ind = prices.indexOf(item);
+    const arr = prices;
+    arr[ind].amount += d;
 
-  const ProductPrices = (id, index, name) => {
+    if (arr[ind].amount === 0) arr[ind].amount = 1;
+    setPrices([...arr]);
+  };
+
+
+
+  const DeleteItems = (index) => {
+    var result =prices
+    result.splice(index,1)
+    setPrices([...result])
+  }
+  const Reset=()=>{
+    setPrices([])
+  }
+  const ProductPrices = (id, name, index) => {
     fetch(`https://fec-inventory-api.herokuapp.com/inventory-info?product_id=${id}`)
       .then(res => res.json())
       .then(data => {
-        if (data) {
-          var AddProduct = [...prices, ...data]
-          console.log(index, name)
-          AddProduct[index].name = name;
-          setPrices(AddProduct)
-        }else{
-          console.log(data)
-        }
+        var AddProduct = [...prices, ...data]
+        AddProduct[AddProduct.length - 1].name = name;
+        setPrices(AddProduct)
       })
   }
+
   return (
     <div className="p-5">
       <h1 className="text-2xl font-medium mb-5">Dashboard {'>'} Supply Room </h1>
       <div className="flex gap-8">
         <div className="w-8/12">
+          {
+            SpinnerLod && <Spinner></Spinner>
+          }
           <div>
             <div className='grid grid-cols-2 gap-6'>
               {
@@ -56,7 +79,7 @@ function App() {
           </div>
         </div>
         <div className="w-4/12 ">
-          <SelectedItem prices={prices}></SelectedItem>
+          <SelectedItem DeleteItems={DeleteItems} prices={prices} Reset={Reset} handleChange={handleChange}></SelectedItem>
         </div>
       </div>
     </div>
