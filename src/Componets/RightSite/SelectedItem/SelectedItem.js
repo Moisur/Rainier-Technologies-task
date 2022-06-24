@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { TiDeleteOutline } from "react-icons/ti";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 const SelectedItem = ({ prices, DeleteItems, Reset }) => {
     const [add, setAdd] = useState([])
-    const [Qut, setQut] = useState(1)
-    const [Total,setTotal]=useState(0)
+    // const [Qut, setQut] = useState(1)
+    // const [Total, setTotal] = useState(0)
     let count = 0;
     const Amount = (item, a) => {
         const ind = prices.indexOf(item);
         var Result = prices;
         if (a === true) {
-            Result[ind].unit_price +=item.unit_price;
-            Result[ind].qty +=1;
+            Result[ind].unit_price += item.unit_price;
+            Result[ind].qty += 1;
             setAdd([...Result])
         }
         if (a === false) {
-            Result[ind].unit_price -=1;
-            Result[ind].qty -=1;
+            Result[ind].unit_price -= 1;
+            Result[ind].qty -= 1;
             setAdd([...Result])
         }
         // handlePrice(item)
 
     }
-    for(const item of prices){
-        count=count+item.unit_price
+    for (const item of prices) {
+        count = count + item.unit_price
     }
     /* ========================= =========================== */
     const submit = () => {
@@ -133,13 +133,12 @@ const SelectedItem = ({ prices, DeleteItems, Reset }) => {
             <div className='mt-10'>
                 <div className="divider"></div>
                 <div className='flex justify-between item-center'>
-                    <button className='btn btn-secondary' onClick={() => Reset()} >Reset</button>
+                    <button onClick={() => Reset()} class="btn btn-outline btn-primary">Reset</button>
                     <h1 className='text-xl font-medium text-right'>Total Prices : $  {count}</h1>
                 </div>
             </div>
             <h1 className='text-center mt-32'>
-                <button onClick={submit} className="btn btn-secondary">Confirm</button>
-
+                <button onClick={submit} class="btn btn-outline btn-primary">Confirm</button>
             </h1>
         </div>
     );
