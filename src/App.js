@@ -6,6 +6,8 @@ function App() {
   const [products, setProduct] = useState([])
   const [prices, setPrices] = useState([])
   const [SpinnerLod, setSpinnerLod] = useState(true)
+
+  /* ================ Inventory Product Fetch ============================ */
   useEffect(() => {
     fetch('https://fec-inventory-api.herokuapp.com/product-info')
       .then(res => res.json())
@@ -17,22 +19,8 @@ function App() {
       })
   }, [])
 
-  // const handleChange = (item, d) => {
-  //   const ind = prices.indexOf(item);
-  //   const arr = prices;
-  //   arr[ind].amount += d;
 
-  //   if (arr[ind].amount === 0) arr[ind].amount = 1;
-  //   setPrices([...arr]);
-  // };
-
-
-
-
-
-
-
-
+  /* =================== single items delete  ============================ */
 
 
   const DeleteItems = (index) => {
@@ -40,9 +28,16 @@ function App() {
     result.splice(index, 1)
     setPrices([...result])
   }
+
+  /* =================== ALl  items delete || Reset  ============================ */
+
   const Reset = () => {
     setPrices([])
   }
+
+
+  /* =================== product items single click and    ============================ */
+
   const ProductPrices = (id, name, index) => {
     fetch(`https://fec-inventory-api.herokuapp.com/inventory-info?product_id=${id}`)
       .then(res => res.json())
@@ -53,7 +48,7 @@ function App() {
       })
   }
 
-  /* ===================== option================== */
+  /* ===================== option items click ==================== */
   const [choice, setChoice] = useState();
   const Delete = () => {
     setChoice('')
@@ -62,6 +57,7 @@ function App() {
   return (
     <div className="p-5">
       <h1 className="text-2xl font-medium mb-5">Dashboard {'>'} Supply Room </h1>
+      {/* ========================== start option work============================= */}
       <div className="my-4 flex items-center  gap-4 ">
         <div>
           <input type="text" className="input w-52 max-w-xs border-amber-300" />
@@ -101,8 +97,12 @@ function App() {
         </div>
 
       </div>
+      {/* ========================== end option work============================= */}
+      {/* ================================ start Product area========================= */}
+
       <div className="flex gap-8">
         <div className="w-8/12">
+          {/* Fetch to product waiting Spinner   */}
           {
             SpinnerLod && <Spinner></Spinner>
           }
@@ -113,12 +113,12 @@ function App() {
                   key={product.id}
                 >
                   <div className="flex gap-5">
-                    <div className={`w-32 h-[100px]  bg-[#f88379] rounded-md`}>
+                    <div  className='w-32 h-[100px] rounded-md bg-[#c3c1c1]'>
                     </div>
                     <div className="flex justify-between items-center gap-1">
                       <div className="w-7/12">
-                        <h1> {product.name.slice(0, 10)}</h1>
-                        <h1> {product.description.slice(0, 50)}</h1>
+                        <h1 className="text-xl font-medium text-black uppercase"> {product.name.slice(0, 10)}</h1>
+                        <h1 className="text-md  text-black"> {product.description.slice(0, 50)}</h1>
                       </div>
                       <div className="w-5/12">
                         <button onClick={() => ProductPrices((product?.id), (product?.name), index)} className='btn tex-sm bg-amber-300 border-0'>Add to List</button>
