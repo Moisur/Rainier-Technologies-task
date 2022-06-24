@@ -68,7 +68,6 @@ function App() {
         </div>
         <select
           value={choice}
-          defaultValue={"default"}
           onChange={(e) => setChoice(e.target.value)}
           className="select select-success w-32 max-w-xs"
         >
@@ -95,7 +94,7 @@ function App() {
           {
             choice && <div className="w-20 flex justify-center items-center gap-4">
               <h1>{choice}</h1>
-              <span onClick={() => Delete()}><ImCross /></span>
+              <span className="cursor-pointer" onClick={() => Delete()}><ImCross /></span>
             </div>
           }
 
